@@ -3,8 +3,9 @@
 #ifndef UUID_V4_H
 #define UUID_V4_H 1
 
+#include <stdbool.h>
 #include "uuid_private.h"
 
-uuid_t *uuidv4(void);
+bool uuidv4(uuid_t *uuid);
 
 #endif

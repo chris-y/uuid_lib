@@ -17,7 +17,7 @@ RM     = delete
 
 # Change these as required
 OPTIMIZE = -O3
-DEBUG    = #-gstabs -DDEBUG
+DEBUG    = -gstabs -DDEBUG
 CFLAGS   = -Wall $(OPTIMIZE) $(DEBUG) -I../include
 
 # Flags passed to gcc during linking
@@ -34,7 +34,7 @@ VERSION = 1
 
 # "main" Interface Source Files
 main_SRCS = main/Obtain.c main/Release.c main/UuidA.c main/FreeUuid.c \
-    main/UuidToText.c main/uuid_v4.c
+    main/UuidToText.c main/uuid_v4.c main/uuid_v5.c 
 
 # -------------------------------------------------------------
 # Nothing should need changing below this line

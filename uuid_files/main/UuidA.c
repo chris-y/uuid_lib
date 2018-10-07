@@ -16,6 +16,7 @@
 
 #include <exec/exec.h>
 #include <proto/exec.h>
+#include <proto/utility.h>
 #include <dos/dos.h>
 #include <libraries/uuid.h>
 #include <proto/uuid.h>
@@ -23,6 +24,7 @@
 #include <stdio.h>
 
 #include "uuid_v4.h"
+#include "uuid_v5.h"
 
 /****** uuid/main/UuidA ******************************************
 *
@@ -56,7 +58,42 @@
 
 void *UuidA(const struct TagItem * taglist)
 {
-	return (void *)uuidv4();
+	struct TagItem *ti;
+	ULONG ver = 4;
+	uuid_t *namespace = NULL;
+	const char *name = NULL;
+	bool ret = false;
+	
+	if((ti = IUtility->FindTagItem(UUID_Version, taglist)))
+	ver = (ULONG)ti->ti_Data;
+
+	if((ti = IUtility->FindTagItem(UUID_Namespace, taglist)))
+	namespace = (uuid_t *)ti->ti_Data;
+
+	if((ti = IUtility->FindTagItem(UUID_Name, taglist)))
+	name = (const char *)ti->ti_Data;
+
+	if((ver == 5) && ((name == NULL) || (namespace == NULL)))
+		return NULL;
+		
+	uuid_t *uuid = IExec->AllocVecTags(sizeof(uuid_t),
+				AVT_Type, MEMF_PRIVATE,
+				TAG_DONE);
+
+	if(uuid == NULL) return NULL;
+
+	if(ver == 5) {
+		ret = uuidv5(uuid, namespace, name);
+	} else {
+		ret = uuidv4(uuid);
+	}
+	
+	if(ret == true) {
+		return uuid;
+	} else {
+		IExec->FreeVec(uuid);
+		return NULL;
+	}
 }
 
 void * VARARGS68K _uuid_Uuid(struct UuidIFace *Self,

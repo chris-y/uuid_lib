@@ -3,31 +3,25 @@
 #include <proto/exec.h>
 #include <stdio.h>
 
-#include "uuid_private.h"
+#include "uuid_v4.h"
 
-uuid_t *uuidv4(void)
+bool uuidv4(uuid_t *uuid)
 {
-	uuid_t *uuid = IExec->AllocVecTags(sizeof(uuid_t),
-				AVT_Type, MEMF_PRIVATE,
-				TAG_DONE);
-
-	if(uuid != NULL) {
-		FILE *rndf = NULL;
-		if(rndf = fopen("RANDOM:", "r")) {
-			fread(uuid, 1, 16, rndf);
-			fclose(rndf);
-		} else {
-			return NULL;
-		}
-	
-		uuid->clock_seq_hi_and_reserved |= (1 << 7);
-		uuid->clock_seq_hi_and_reserved &= ~(1 << 6);
-
-		uuid->time_hi_and_version &= ~(1 << 12);
-		uuid->time_hi_and_version &= ~(1 << 13);
-		uuid->time_hi_and_version |= (1 << 14);
-		uuid->time_hi_and_version &= ~(1 << 15);
+	FILE *rndf = NULL;
+	if(rndf = fopen("RANDOM:", "r")) {
+		fread(uuid, 1, 16, rndf);
+		fclose(rndf);
+	} else {
+		return false;
 	}
 	
-	return uuid;
+	uuid->clock_seq_hi_and_reserved |= (1 << 7);
+	uuid->clock_seq_hi_and_reserved &= ~(1 << 6);
+
+	uuid->time_hi_and_version &= ~(1 << 12);
+	uuid->time_hi_and_version &= ~(1 << 13);
+	uuid->time_hi_and_version |= (1 << 14);
+	uuid->time_hi_and_version &= ~(1 << 15);
+	
+	return true;
 }
