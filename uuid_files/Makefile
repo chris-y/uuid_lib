@@ -34,7 +34,7 @@ VERSION = 1
 
 # "main" Interface Source Files
 main_SRCS = main/Obtain.c main/Release.c main/UuidA.c main/FreeUuid.c \
-    main/UuidToText.c main/uuid_v4.c main/uuid_v5.c 
+    main/UuidToText.c main/uuid_v4.c main/uuid_v5.c main/uuid_preset.c
 
 # -------------------------------------------------------------
 # Nothing should need changing below this line

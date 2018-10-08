@@ -11,4 +11,5 @@ typedef struct {
     uint8   clock_seq_low;
     char        node[6];
 } uuid_t;
+
 #endif

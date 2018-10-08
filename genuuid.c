@@ -1,4 +1,6 @@
 /* genuuid */
+/* gcc -o genuuid genuuid.c -Iinclude
+*/
 
 #include <proto/exec.h>
 #include <proto/dos.h>
@@ -57,7 +59,8 @@ int main(int argc, char **argv)
 		}
 	}
 
-	void *uuid_ns = IExec->AllocVec(16, MEMF_CLEAR);
+	void *uuid_ns = IUuid->Uuid(UUID_Preset, UUID_NS_DNS,
+						TAG_DONE);
 				
 	void *uuid = IUuid->Uuid(UUID_Version, ver,
 						UUID_Namespace, uuid_ns,
