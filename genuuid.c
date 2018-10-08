@@ -63,12 +63,12 @@ int main(int argc, char **argv)
 						UUID_Namespace, uuid_ns,
 						UUID_Name, name,
 						TAG_DONE);
-	char str[40];
+	char str[37];
 
 	if(uuid_ns != NULL) {
 		IUuid->UuidToText(uuid_ns, str);
 
-		printf("namespace: %s\n", str);
+		printf("namespace: %s name: %s\n", str, name);
 		
 		IUuid->FreeUuid(uuid_ns);
 	}
