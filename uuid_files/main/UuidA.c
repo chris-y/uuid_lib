@@ -23,6 +23,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#include "uuid_v1.h"
 #include "uuid_v4.h"
 #include "uuid_v5.h"
 #include "uuid_preset.h"
@@ -91,8 +92,10 @@ void *UuidA(const struct TagItem * taglist)
 		ret = uuid_preset(uuid, preset);
 	} else if(ver == 5) {
 		ret = uuidv5(uuid, namespace, name);
-	} else {
+	} else if(ver == 4) {
 		ret = uuidv4(uuid);
+	} else {
+		ret = uuidv1(uuid);
 	}
 	
 	if(ret == true) {

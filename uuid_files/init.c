@@ -16,6 +16,7 @@
 
 #include <exec/exec.h>
 #include <proto/exec.h>
+#include <proto/timer.h>
 #include <dos/dos.h>
 #include <libraries/uuid.h>
 #include <proto/uuid.h>
@@ -30,6 +31,8 @@ struct ExecIFace *IExec;
 struct UtilityBase *UtilityBase;
 struct UtilityIFace *IUtility;
 
+struct TimerIFace *ITimer;
+
 /* Version Tag */
 #include "uuid.library_rev.h"
 STATIC CONST UBYTE USED verstag[] = VERSTAG;
@@ -39,6 +42,7 @@ struct UuidBase
     struct Library libNode;
     BPTR segList;
     /* If you need more data fields, add them here */
+    struct TimeRequest *TimerIO;
 };
 
 /*
@@ -109,6 +113,17 @@ STATIC APTR libExpunge(struct LibraryManagerInterface *Self)
 	     result = (APTR)libBase->segList;
         /* Undo what the init code did */
 
+if (!(IExec->CheckIO(libBase->TimerIO)))
+{
+    IExec->AbortIO(libBase->TimerIO);      /* Ask device to abort any pending requests */
+}
+ 
+IExec->WaitIO(libBase->TimerIO);          /* Clean up */
+
+IExec->DropInterface(ITimer); 
+IExec->CloseDevice((struct IORequest *)libBase->TimerIO);  /* Close Timer device */
+IExec->FreeVec(libBase->TimerIO);
+
       IExec->DropInterface((struct Interface *)IUtility);
        IExec->DropInterface((struct Interface *)INewlib);
        IExec->CloseLibrary(NewlibBase);
@@ -161,6 +176,20 @@ STATIC struct Library *libInit(struct Library *LibraryBase, APTR seglist, struct
                return NULL;
        } else return NULL; 
 
+	/* Allocate memory for TimeRequest and TimeVal structures */
+	libBase->TimerIO = IExec->AllocVecTags(sizeof(struct TimeRequest),
+    		AVT_ClearWithValue, 0,
+    		TAG_END);
+ 
+	if (libBase->TimerIO  == NULL) return NULL;
+
+	if(IExec->OpenDevice(TIMERNAME, UNIT_MICROHZ, libBase->TimerIO, 0))
+		return NULL;
+ 
+	/* Set up pointers for timer functions */
+	struct Library *TimerBase = (struct Library *)libBase->TimerIO->Request.io_Device;
+	ITimer = IExec->GetInterface(TimerBase, "main", 1, NULL);
+	if(!ITimer) return NULL;
 
        return (struct Library *)libBase;
 }

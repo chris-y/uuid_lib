@@ -59,15 +59,18 @@ int main(int argc, char **argv)
 		}
 	}
 
+/*
 	void *uuid_ns = IUuid->Uuid(UUID_Preset, UUID_NS_DNS,
 						TAG_DONE);
+*/
 				
 	void *uuid = IUuid->Uuid(UUID_Version, ver,
-						UUID_Namespace, uuid_ns,
-						UUID_Name, name,
+//						UUID_Namespace, uuid_ns,
+//						UUID_Name, name,
 						TAG_DONE);
 	char str[37];
 
+/*
 	if(uuid_ns != NULL) {
 		IUuid->UuidToText(uuid_ns, str);
 
@@ -75,6 +78,7 @@ int main(int argc, char **argv)
 		
 		IUuid->FreeUuid(uuid_ns);
 	}
+*/
 
 	if(uuid != NULL) {
 		IUuid->UuidToText(uuid, str);
