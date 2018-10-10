@@ -2,9 +2,15 @@
 
 #include <proto/exec.h>
 #include <proto/bsdsocket.h>
+#include <proto/timer.h>
+#include <proto/timezone.h>
+#include <libraries/timezone.h>
 
 #include <stdbool.h>
 #include <stdio.h>
+
+#define GREGTOAMIGASECS (uint64)12471768000ULL
+//12471757200ULL
 
 struct uuid_store {
     bool mac_set;
@@ -69,6 +75,23 @@ UBYTE *store_get_mac(void)
 	}
 
 	return &store.mac;
+}
+
+uint64 store_get_timestamp(void)
+{
+	struct TimeVal tv;
+	uint64 uuidtime;
+	int32 offset = 0;
+	
+	ITimezone->GetTimezoneAttrs(NULL, TZA_UTCOffset, &offset, TAG_DONE);
+
+	offset *= 60;
+	
+	ITimer->GetSysTime(&tv);
+	
+	uuidtime = (((uint64)tv.Seconds + GREGTOAMIGASECS + offset) * (uint64)10000000) + ((uint64)tv.Microseconds * 10);
+
+	return uuidtime;	
 }
 
 void store_save(void)

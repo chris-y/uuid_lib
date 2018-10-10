@@ -7,6 +7,7 @@ struct uuid_store;
 
 UBYTE *store_get_mac(void);
 UBYTE *store_get_clockseq(void);
+uint64 store_get_timestamp(void);
 
 void store_save(void);
 

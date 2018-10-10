@@ -17,6 +17,8 @@
 #include <exec/exec.h>
 #include <proto/exec.h>
 #include <proto/timer.h>
+#include <proto/timezone.h>
+
 #include <dos/dos.h>
 #include <libraries/uuid.h>
 #include <proto/uuid.h>
@@ -30,6 +32,9 @@ struct ExecIFace *IExec;
 
 struct UtilityBase *UtilityBase;
 struct UtilityIFace *IUtility;
+
+struct Library *TimezoneBase;
+struct TimezoneIFace *ITimezone;
 
 struct TimerIFace *ITimer;
 
@@ -124,11 +129,14 @@ IExec->DropInterface(ITimer);
 IExec->CloseDevice((struct IORequest *)libBase->TimerIO);  /* Close Timer device */
 IExec->FreeVec(libBase->TimerIO);
 
+      IExec->DropInterface((struct Interface *)ITimezone);
+       IExec->CloseLibrary((struct Library *)TimezoneBase);
+       
       IExec->DropInterface((struct Interface *)IUtility);
+       IExec->CloseLibrary((struct Library *)UtilityBase);
+       
        IExec->DropInterface((struct Interface *)INewlib);
        IExec->CloseLibrary(NewlibBase);
-      
-       IExec->CloseLibrary((struct Library *)UtilityBase);
 
         IExec->Remove((struct Node *)libBase);
         IExec->DeleteLibrary((struct Library *)libBase);
@@ -173,6 +181,15 @@ STATIC struct Library *libInit(struct Library *LibraryBase, APTR seglist, struct
            IUtility = (struct UtilityIFace *)IExec->GetInterface(UtilityBase, 
               "main", 1, NULL);
            if (!IUtility)
+               return NULL;
+       } else return NULL; 
+
+       TimezoneBase = IExec->OpenLibrary("timezone.library", 50L);
+       if (TimezoneBase)
+       {
+           ITimezone = (struct TimezoneIFace *)IExec->GetInterface(TimezoneBase, 
+              "main", 1, NULL);
+           if (!ITimezone)
                return NULL;
        } else return NULL; 
 

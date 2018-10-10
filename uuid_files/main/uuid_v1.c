@@ -1,24 +1,17 @@
 /* v1 UUID */
 
 #include <proto/exec.h>
-#include <proto/timer.h>
 #include <stdio.h>
 
 #include "store.h"
 #include "uuid_v1.h"
 
-#define GREGTOAMIGASECS (uint64)12471757200
+#define GREGTOAMIGASECS (uint64)12471757200ULL
 
 bool uuidv1(uuid_t *uuid)
 {
-	struct TimeVal tv;
-	uint64 uuidtime;
-	
-	ITimer->GetSysTime(&tv);
-	
-	uuidtime = (((uint64)tv.Seconds + GREGTOAMIGASECS) * (uint64)10000000) + ((uint64)tv.Microseconds * 10);
-// add missing 100 nanosecond intervals + convert to utc
-	
+	uint64 uuidtime = store_get_timestamp();
+
 	uuid->time_low = (uint32)(uuidtime & 0xFFFFFFFF);
 	uuid->time_mid = (uint16)((uuidtime >> 32) & 0xFFFF);
 	uuid->time_hi_and_version = (uint16)((uuidtime >> 48) & 0x0FFF);

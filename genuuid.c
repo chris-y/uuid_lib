@@ -12,7 +12,7 @@ struct UuidIFace *IUuid;
 
 int main(int argc, char **argv)
 {
-	ULONG ver = 4;
+	ULONG ver = 1;
 	char *name = NULL;
 	char *namespace = NULL;
 	LONG rarray[] = {0, 0, 0};
@@ -63,11 +63,18 @@ int main(int argc, char **argv)
 	void *uuid_ns = IUuid->Uuid(UUID_Preset, UUID_NS_DNS,
 						TAG_DONE);
 */
-				
-	void *uuid = IUuid->Uuid(UUID_Version, ver,
+
+	void *uuid[10];
+	int p=0;
+
+	while(p<10) {
+	uuid[p] = IUuid->Uuid(UUID_Version, ver,
 //						UUID_Namespace, uuid_ns,
 //						UUID_Name, name,
 						TAG_DONE);
+	p++;
+	}
+	
 	char str[37];
 
 /*
@@ -80,13 +87,17 @@ int main(int argc, char **argv)
 	}
 */
 
-	if(uuid != NULL) {
-		IUuid->UuidToText(uuid, str);
+p=0;
+while(p<10) {
+	if(uuid[p] != NULL) {
+		IUuid->UuidToText(uuid[p], str);
 
 		printf("[ver %d] %s\n", ver, str);
 		
-		IUuid->FreeUuid(uuid);
+		IUuid->FreeUuid(uuid[p]);
 	}
+	p++;
+}
 
 	IExec->DropInterface(IUuid);
 	IExec->CloseLibrary(UuidBase);
