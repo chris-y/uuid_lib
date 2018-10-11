@@ -17,10 +17,17 @@ struct uuid_store {
     UBYTE        mac[16];
     bool clockseq_set;
     UBYTE clockseq[2];
+    uint64 lasttime;
+    int seq;
 };
 
 static struct uuid_store store = { false, {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-							false, {0, 0}};
+							false, {0, 0}, 0, 0};
+
+static void store_save(void)
+{
+	// save store
+}
 
 static void store_set_clockseq(void)
 {
@@ -39,7 +46,6 @@ UBYTE *store_get_clockseq(void)
 	store_set_clockseq();
 	return &store.clockseq;
 }
-
 
 UBYTE *store_get_mac(void)
 {
@@ -77,23 +83,34 @@ UBYTE *store_get_mac(void)
 	return &store.mac;
 }
 
+static void store_load(void)
+{
+	//load store
+}
+
 uint64 store_get_timestamp(void)
 {
 	struct TimeVal tv;
 	uint64 uuidtime;
 	int32 offset = 0;
-	
-	ITimezone->GetTimezoneAttrs(NULL, TZA_UTCOffset, &offset, TAG_DONE);
 
+	if(store.seq < 9) {
+		store.seq++;
+		return store.lasttime + (uint64)store.seq;
+	} else {
+		store.seq = 0;
+	}
+
+	ITimer->GetSysTime(&tv);
+
+	ITimezone->GetTimezoneAttrs(NULL, TZA_UTCOffset, &offset, TAG_DONE);
 	offset *= 60;
 	
-	ITimer->GetSysTime(&tv);
-	
 	uuidtime = (((uint64)tv.Seconds + GREGTOAMIGASECS + offset) * (uint64)10000000) + ((uint64)tv.Microseconds * 10);
+	if(store.lasttime == uuidtime) return 0ULL;
+	store.lasttime = uuidtime;
+
+	store_save();
 
 	return uuidtime;	
-}
-
-void store_save(void)
-{
 }

@@ -64,10 +64,10 @@ int main(int argc, char **argv)
 						TAG_DONE);
 */
 
-	void *uuid[10];
+	void *uuid[10000];
 	int p=0;
 
-	while(p<10) {
+	while(p<10000) {
 	uuid[p] = IUuid->Uuid(UUID_Version, ver,
 //						UUID_Namespace, uuid_ns,
 //						UUID_Name, name,
@@ -88,13 +88,15 @@ int main(int argc, char **argv)
 */
 
 p=0;
-while(p<10) {
+while(p<10000) {
 	if(uuid[p] != NULL) {
 		IUuid->UuidToText(uuid[p], str);
 
 		printf("[ver %d] %s\n", ver, str);
 		
 		IUuid->FreeUuid(uuid[p]);
+	} else {
+		printf("[unable to allocate uuid]\n");
 	}
 	p++;
 }

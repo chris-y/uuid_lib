@@ -11,6 +11,8 @@
 bool uuidv1(uuid_t *uuid)
 {
 	uint64 uuidtime = store_get_timestamp();
+	
+	if(uuidtime == 0ULL) return false;
 
 	uuid->time_low = (uint32)(uuidtime & 0xFFFFFFFF);
 	uuid->time_mid = (uint16)((uuidtime >> 32) & 0xFFFF);
