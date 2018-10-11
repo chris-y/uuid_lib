@@ -15,6 +15,7 @@
 
 
 #include <exec/exec.h>
+#include <proto/dos.h>
 #include <proto/exec.h>
 #include <proto/timer.h>
 #include <proto/timezone.h>
@@ -32,6 +33,9 @@ struct ExecIFace *IExec;
 
 struct UtilityBase *UtilityBase;
 struct UtilityIFace *IUtility;
+
+struct Library *DOSBase;
+struct DOSIFace *IDOS;
 
 struct Library *TimezoneBase;
 struct TimezoneIFace *ITimezone;
@@ -135,6 +139,9 @@ IExec->FreeVec(libBase->TimerIO);
       IExec->DropInterface((struct Interface *)IUtility);
        IExec->CloseLibrary((struct Library *)UtilityBase);
        
+      IExec->DropInterface((struct Interface *)IDOS);
+       IExec->CloseLibrary((struct Library *)DOSBase);
+       
        IExec->DropInterface((struct Interface *)INewlib);
        IExec->CloseLibrary(NewlibBase);
 
@@ -181,6 +188,15 @@ STATIC struct Library *libInit(struct Library *LibraryBase, APTR seglist, struct
            IUtility = (struct UtilityIFace *)IExec->GetInterface(UtilityBase, 
               "main", 1, NULL);
            if (!IUtility)
+               return NULL;
+       } else return NULL; 
+
+       DOSBase = IExec->OpenLibrary("dos.library", 50L);
+       if (DOSBase)
+       {
+           IDOS = (struct DOSIFace *)IExec->GetInterface(DOSBase, 
+              "main", 1, NULL);
+           if (!IDOS)
                return NULL;
        } else return NULL; 
 

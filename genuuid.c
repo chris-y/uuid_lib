@@ -64,16 +64,13 @@ int main(int argc, char **argv)
 						TAG_DONE);
 */
 
-	void *uuid[10000];
+	void *uuid;
 	int p=0;
 
-	while(p<10000) {
-	uuid[p] = IUuid->Uuid(UUID_Version, ver,
+	uuid = IUuid->Uuid(UUID_Version, ver,
 //						UUID_Namespace, uuid_ns,
 //						UUID_Name, name,
 						TAG_DONE);
-	p++;
-	}
 	
 	char str[37];
 
@@ -87,19 +84,15 @@ int main(int argc, char **argv)
 	}
 */
 
-p=0;
-while(p<10000) {
-	if(uuid[p] != NULL) {
-		IUuid->UuidToText(uuid[p], str);
+	if(uuid != NULL) {
+		IUuid->UuidToText(uuid, str);
 
 		printf("[ver %d] %s\n", ver, str);
 		
-		IUuid->FreeUuid(uuid[p]);
+		IUuid->FreeUuid(uuid);
 	} else {
 		printf("[unable to allocate uuid]\n");
 	}
-	p++;
-}
 
 	IExec->DropInterface(IUuid);
 	IExec->CloseLibrary(UuidBase);
