@@ -65,7 +65,6 @@ int main(int argc, char **argv)
 */
 
 	void *uuid;
-	int p=0;
 
 	uuid = IUuid->Uuid(UUID_Version, ver,
 //						UUID_Namespace, uuid_ns,

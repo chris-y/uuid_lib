@@ -36,7 +36,7 @@ static void store_save(void)
 static void store_set_clockseq(void)
 {
 	FILE *rndf = NULL;
-	if(rndf = fopen("RANDOM:", "r")) {
+	if((rndf = fopen("RANDOM:", "r"))) {
 		fread((UBYTE *)&store.clockseq, 1, 2, rndf);
 		fclose(rndf);
 		store.clockseq_set = true;
@@ -46,7 +46,7 @@ static void store_set_clockseq(void)
 static void store_inc_clockseq(void)
 {
 	if(store.clockseq_set == true) {
-		store.clockseq + 1;
+		store.clockseq += 1;
 	} else {
 		store_set_clockseq();
 	}
@@ -61,9 +61,9 @@ UBYTE *store_get_mac(void)
 {
 	struct Library *SocketBase;
 	struct SocketIFace *ISocket;
-	UBYTE mac[16];
+	UBYTE mac[20];
 	
-	if(store.mac_set == true) return &store.mac;
+	if(store.mac_set == true) return (UBYTE *)&store.mac;
 	
 	if((SocketBase = IExec->OpenLibrary("bsdsocket.library",4))) {
 		if((ISocket = (struct SocketIFace *)IExec->GetInterface(SocketBase,"main",1,NULL))) {
@@ -85,16 +85,16 @@ UBYTE *store_get_mac(void)
 						(mac[4] == store.mac[4]) &&
 						(mac[5] == store.mac[5])) {
 #ifdef DEBUG
-						IExec->DebugPrintF("MAC address: %02x:%02x:%02x:%02x:%02x:%02x\n", store.mac[0], store.mac[1], store.mac[2], store.mac[3], store.mac[4], store.mac[5]);
+						IExec->DebugPrintF("MAC address: %02x:%02x:%02x:%02x:%02x:%02x\n", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 #endif
 
 					} else {
-						store.mac[0] == mac[0];
-						store.mac[1] == mac[1];
-						store.mac[2] == mac[2];
-						store.mac[3] == mac[3];
-						store.mac[4] == mac[4];
-						store.mac[5] == mac[5];
+						store.mac[0] = mac[0];
+						store.mac[1] = mac[1];
+						store.mac[2] = mac[2];
+						store.mac[3] = mac[3];
+						store.mac[4] = mac[4];
+						store.mac[5] = mac[5];
 						store_set_clockseq(); // only if mac has changed otherwise use stored ver
 					}
 				}
@@ -110,7 +110,7 @@ UBYTE *store_get_mac(void)
 
 static void store_load(void)
 {
-	if(IDOS->GetVar("uuid/store", &store, sizeof(struct uuid_store),
+	if(IDOS->GetVar("uuid/store", &store, sizeof(struct uuid_store) - 1,
 			GVF_GLOBAL_ONLY | GVF_BINARY_VAR | GVF_DONT_NULL_TERM) == -1) {
 		store.ver = STORE_VER;
 	} else {
