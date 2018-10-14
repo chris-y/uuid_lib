@@ -6,6 +6,7 @@
 #include <proto/dos.h>
 #include <proto/uuid.h>
 #include <stdio.h>
+#include <string.h>
 
 struct UuidBase *UuidBase;
 struct UuidIFace *IUuid;
@@ -59,21 +60,25 @@ int main(int argc, char **argv)
 		}
 	}
 
-/*
-	void *uuid_ns = IUuid->Uuid(UUID_Preset, UUID_NS_DNS,
-						TAG_DONE);
-*/
 
-	void *uuid;
-
-	uuid = IUuid->Uuid(UUID_Version, ver,
-//						UUID_Namespace, uuid_ns,
-//						UUID_Name, name,
+	void *uuid_ns = NULL;
+	void *uuid = NULL;
+	
+	if(ver == 5) {
+		uuid_ns = IUuid->Uuid(UUID_Preset, UUID_NS_DNS,
 						TAG_DONE);
 	
+		uuid = IUuid->Uuid(UUID_Version, ver,
+						UUID_Namespace, uuid_ns,
+						UUID_Name, name,
+						TAG_DONE);
+	} else {
+		uuid = IUuid->Uuid(UUID_Version, ver,
+						TAG_DONE);
+	}
+						
 	char str[37];
 
-/*
 	if(uuid_ns != NULL) {
 		IUuid->UuidToText(uuid_ns, str);
 
@@ -81,7 +86,6 @@ int main(int argc, char **argv)
 		
 		IUuid->FreeUuid(uuid_ns);
 	}
-*/
 
 	if(uuid != NULL) {
 		IUuid->UuidToText(uuid, str);
@@ -92,6 +96,9 @@ int main(int argc, char **argv)
 	} else {
 		printf("[unable to allocate uuid]\n");
 	}
+
+	if(name != NULL) free(name);
+	if(namespace != NULL) free(namespace);
 
 	IExec->DropInterface(IUuid);
 	IExec->CloseLibrary(UuidBase);

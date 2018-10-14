@@ -6,6 +6,6 @@
 #include <stdbool.h>
 #include "uuid_private.h"
 
-bool uuidv5(uuid_t *uuid, uuid_t *namespace, const char *name);
+bool uuidv5(uuid_t *uuid, uuid_t *namespace, char *name);
 
 #endif

@@ -8,8 +8,8 @@
 
 #define UUID_Version	TAG_USER+1
 #define UUID_Namespace	TAG_USER+2
-#define UUID_Name	TAG_USER+2
-#define UUID_Preset	TAG_USER+3 /* See below */
+#define UUID_Name	TAG_USER+3
+#define UUID_Preset	TAG_USER+4 /* See below */
 
 /* Pre-defined UUIDs */
 #define UUID_NULL	1

@@ -64,7 +64,7 @@ void *UuidA(const struct TagItem * taglist)
 	ULONG ver = 4;
 	ULONG preset = 0;
 	uuid_t *namespace = NULL;
-	const char *name = NULL;
+	char *name = NULL;
 	bool ret = false;
 	
 	if((ti = IUtility->FindTagItem(UUID_Version, taglist)))
@@ -76,8 +76,12 @@ void *UuidA(const struct TagItem * taglist)
 	if((ti = IUtility->FindTagItem(UUID_Namespace, taglist)))
 		namespace = (uuid_t *)ti->ti_Data;
 
-	if((ti = IUtility->FindTagItem(UUID_Name, taglist)))
-		name = (const char *)ti->ti_Data;
+	if((ti = IUtility->FindTagItem(UUID_Name, taglist))) {
+		name = (char *)ti->ti_Data;
+		#ifdef DEBUG
+		IExec->DebugPrintF("%s\n", name);
+		#endif
+	}
 
 	if((ver == 5) && ((name == NULL) || (namespace == NULL)))
 		return NULL;

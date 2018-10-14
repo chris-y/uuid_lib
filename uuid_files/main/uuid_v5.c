@@ -8,7 +8,7 @@
 
 #include "uuid_v5.h"
 
-bool uuidv5(uuid_t *uuid, uuid_t *namespace, const char *name)
+bool uuidv5(uuid_t *uuid, uuid_t *namespace, char *name)
 {
 
 	struct MessageDigest_SHA mdsha;
@@ -18,9 +18,9 @@ bool uuidv5(uuid_t *uuid, uuid_t *namespace, const char *name)
 	IUtility->MessageDigest_SHA_Update(&mdsha, name, strlen(name));
 	IUtility->MessageDigest_SHA_Final(&mdsha);
 	
-	memcpy(&uuid->time_low, &mdsha.mdsha_Code, 4);
-	memcpy(&uuid->time_mid, &mdsha.mdsha_Code[4], 2);
-	memcpy(&uuid->time_hi_and_version, &mdsha.mdsha_Code[6], 2);
+	IExec->CopyMem(&mdsha.mdsha_Code, &uuid->time_low, 4);
+	IExec->CopyMem(&mdsha.mdsha_Code[4], &uuid->time_mid, 2);
+	IExec->CopyMem(&mdsha.mdsha_Code[6], &uuid->time_hi_and_version, 2);
 
 	uuid->clock_seq_hi_and_reserved = mdsha.mdsha_Code[8];
 	uuid->clock_seq_low = mdsha.mdsha_Code[9];
