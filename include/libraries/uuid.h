@@ -10,6 +10,7 @@
 #define UUID_Namespace	TAG_USER+2
 #define UUID_Name	TAG_USER+3
 #define UUID_Preset	TAG_USER+4 /* See below */
+#define UUID_String	TAG_USER+5
 
 /* Pre-defined UUIDs */
 #define UUID_NULL	1

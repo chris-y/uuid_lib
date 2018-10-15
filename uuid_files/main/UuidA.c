@@ -27,6 +27,7 @@
 #include "uuid_v4.h"
 #include "uuid_v5.h"
 #include "uuid_preset.h"
+#include "uuid_string.h"
 
 /****** uuid/main/UuidA ******************************************
 *
@@ -65,6 +66,7 @@ void *UuidA(const struct TagItem * taglist)
 	ULONG preset = 0;
 	uuid_t *namespace = NULL;
 	char *name = NULL;
+	char *uuid_str = NULL;
 	bool ret = false;
 	
 	if((ti = IUtility->FindTagItem(UUID_Version, taglist)))
@@ -72,6 +74,9 @@ void *UuidA(const struct TagItem * taglist)
 
 	if((ti = IUtility->FindTagItem(UUID_Preset, taglist)))
 		preset = (ULONG)ti->ti_Data;
+
+	if((ti = IUtility->FindTagItem(UUID_String, taglist)))
+		uuid_str = (char *)ti->ti_Data;
 
 	if((ti = IUtility->FindTagItem(UUID_Namespace, taglist)))
 		namespace = (uuid_t *)ti->ti_Data;
@@ -94,6 +99,8 @@ void *UuidA(const struct TagItem * taglist)
 
 	if(preset != 0) {
 		ret = uuid_preset(uuid, preset);
+	} else if (uuid_str != NULL) {
+		ret = uuid_string(uuid, uuid_str);
 	} else if(ver == 5) {
 		ret = uuidv5(uuid, namespace, name);
 	} else if(ver == 4) {

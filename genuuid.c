@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	char *namespace = NULL;
 	LONG rarray[] = {0, 0, 0};
 	struct RDArgs *args;
-	STRPTR template = "VERSION=VER/K/N,NAMESPACE/K,NAME/K";
+	STRPTR template = "VERSION=VER/K/N,UUID=NAMESPACE/K,NAME/K";
 
 	enum
 	{
@@ -65,8 +65,11 @@ int main(int argc, char **argv)
 	void *uuid = NULL;
 	
 	if(ver == 5) {
-		uuid_ns = IUuid->Uuid(UUID_Preset, UUID_NS_DNS,
+		uuid_ns = IUuid->Uuid(UUID_String, namespace,
 						TAG_DONE);
+						
+//		uuid_ns = IUuid->Uuid(UUID_Preset, UUID_NS_DNS,
+//						TAG_DONE);
 	
 		uuid = IUuid->Uuid(UUID_Version, ver,
 						UUID_Namespace, uuid_ns,

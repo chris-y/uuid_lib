@@ -3,6 +3,8 @@
 #ifndef _LIBRARIES_UUID__PRIV_H_
 #define _LIBRARIES_UUID__PRIV_H_ 1
 
+#include <exec/types.h>
+
 typedef struct {
     uint32  time_low;
     uint16  time_mid;
