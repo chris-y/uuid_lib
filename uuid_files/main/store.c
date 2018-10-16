@@ -33,14 +33,25 @@ static void store_save(void)
 		GVF_GLOBAL_ONLY | GVF_SAVE_VAR | GVF_BINARY_VAR);
 }
 
-static void store_set_clockseq(void)
+static bool store_get_random_bytes(UBYTE *ptr, int s)
 {
 	FILE *rndf = NULL;
 	if((rndf = fopen("RANDOM:", "r"))) {
-		fread((UBYTE *)&store.clockseq, 1, 2, rndf);
+		fread(ptr, 1, s, rndf);
 		fclose(rndf);
-		store.clockseq_set = true;
-	} 
+		return true;
+	}
+	return false;
+}
+
+static void store_set_clockseq(void)
+{
+	store.clockseq_set = store_get_random_bytes((UBYTE *)&store.clockseq, 2);
+
+	if(store.clockseq_set == false) {
+		// couldn't get random bytes
+		// not sure what to do here
+	}
 }
 
 static void store_inc_clockseq(void)
@@ -103,6 +114,15 @@ UBYTE *store_get_mac(void)
 			IExec->DropInterface(ISocket);
 		}
 		IExec->CloseLibrary(SocketBase);
+	}
+	
+	if(store.mac_set == false) {
+	/* unable to obtain a MAC address so make one up */
+		store_get_random_bytes((UBYTE *)&store.mac, 6);
+		store.mac[0] |= 1;
+		store.mac_set = true;
+
+		store_set_clockseq();
 	}
 
 	return &store.mac;
