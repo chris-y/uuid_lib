@@ -3,7 +3,7 @@
  *
  *  This file is part of uuid.
  *
- *  Copyright (c) 2018 Hyperion Entertainment CVBA.
+ *  Copyright (c) 2018 Unsatisfactory Software
  *  All Rights Reserved.
  *
  * $Id$
@@ -24,7 +24,7 @@
 /****** uuid/main/FreeUuid ******************************************
 *
 *   NAME
-*      FreeUuid -- Description
+*      FreeUuid -- Free a UUID object
 *
 *   SYNOPSIS
 *      void FreeUuid(void * uuid);
@@ -32,7 +32,7 @@
 *   FUNCTION
 *
 *   INPUTS
-*       uuid - 
+*       uuid - UUID object to free
 *
 *   RESULT
 *       This function does not return a result

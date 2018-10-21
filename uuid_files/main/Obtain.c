@@ -1,9 +1,9 @@
 /* :ts=4
- *  $VER: Obtain.c $Revision$ (07-Oct-2018)
+ *  $VER: Obtain.c $Revision$ (15-Oct-2018)
  *
  *  This file is part of uuid.
  *
- *  Copyright (c) 2018 Hyperion Entertainment CVBA.
+ *  Copyright (c) 2018 Usatisfactory Software
  *  All Rights Reserved.
  *
  * $Id$
@@ -21,32 +21,7 @@
 #include <proto/uuid.h>
 #include <stdarg.h>
 
-/****** uuid/main/Obtain ******************************************
-*
-*   NAME
-*      Obtain -- Description
-*
-*   SYNOPSIS
-*      ULONG Obtain(void);
-*
-*   FUNCTION
-*
-*   INPUTS
-*
-*   RESULT
-*       The result ...
-*
-*   EXAMPLE
-*
-*   NOTES
-*
-*   BUGS
-*
-*   SEE ALSO
-*
-*****************************************************************************
-*
-*/
+/* unused */
 
 ULONG _uuid_Obtain(struct UuidIFace *Self)
 {

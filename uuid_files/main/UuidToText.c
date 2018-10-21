@@ -3,7 +3,7 @@
  *
  *  This file is part of uuid.
  *
- *  Copyright (c) 2018 Hyperion Entertainment CVBA.
+ *  Copyright (c) 2018 Unsatisfactory Software
  *  All Rights Reserved.
  *
  * $Id$
@@ -27,7 +27,7 @@
 /****** uuid/main/UuidToText ******************************************
 *
 *   NAME
-*      UuidToText -- Description
+*      UuidToText -- Convert a private UUID object to a string
 *
 *   SYNOPSIS
 *      void UuidToText(void * uuid, char * text);
@@ -35,8 +35,8 @@
 *   FUNCTION
 *
 *   INPUTS
-*       uuid - 
-*       text - 
+*       uuid - Pointer to a UUID object
+*       text - Pointer to a buffer of 37 bytes to hold the string representation
 *
 *   RESULT
 *       This function does not return a result

@@ -14,10 +14,11 @@ LD     = $(CROSS_COMPILE)ld
 RANLIB = $(CROSS_COMPILE)ranlib 
 RM     = delete
 # RM     = rm
+AUTODOC = autodoc
 
 # Change these as required
 OPTIMIZE = -O3
-DEBUG    = -gstabs -DDEBUG
+DEBUG    = #-gstabs -DDEBUG
 CFLAGS   = -Wall $(OPTIMIZE) $(DEBUG) -I../include
 
 # Flags passed to gcc during linking
@@ -54,4 +55,8 @@ clean:
 .PHONY: revision
 revision:
 	bumprev $(VERSION) $(TARGET)
+
+.PHONY: docs
+docs:
+	$(AUTODOC) $(main_SRCS) >$(TARGET).doc
 

@@ -3,7 +3,7 @@
  *
  *  This file is part of uuid.
  *
- *  Copyright (c) 2018 Hyperion Entertainment CVBA.
+ *  Copyright (c) 2018 Unsatisfactory Software
  *  All Rights Reserved.
  *
  * $Id$
@@ -21,32 +21,7 @@
 #include <proto/uuid.h>
 #include <stdarg.h>
 
-/****** uuid/main/Release ******************************************
-*
-*   NAME
-*      Release -- Description
-*
-*   SYNOPSIS
-*      ULONG Release(void);
-*
-*   FUNCTION
-*
-*   INPUTS
-*
-*   RESULT
-*       The result ...
-*
-*   EXAMPLE
-*
-*   NOTES
-*
-*   BUGS
-*
-*   SEE ALSO
-*
-*****************************************************************************
-*
-*/
+/* unused */
 
 ULONG _uuid_Release(struct UuidIFace *Self)
 {

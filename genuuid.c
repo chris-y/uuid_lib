@@ -11,6 +11,8 @@
 struct UuidBase *UuidBase;
 struct UuidIFace *IUuid;
 
+UNUSED char *ver = "\0$VER:genuuid 1.1 (21.10.2018)\0";
+
 int main(int argc, char **argv)
 {
 	ULONG ver = 1;
@@ -32,9 +34,11 @@ int main(int argc, char **argv)
 		IUuid = (struct UuidIFace *)IExec->GetInterface(UuidBase, "main", 1, NULL);
 		if (!IUuid) {
 			IExec->DropInterface(IUuid);
+			printf("genuuid (c) 2018 Chris Young <chris@unsatisfactorysoftware.co.uk>\n\nUnable to open uuid.library\n\n");
 			return 5;
 		}
 	} else {
+		printf("genuuid (c) 2018 Chris Young <chris@unsatisfactorysoftware.co.uk>\n\nUnable to open uuid.library\n\n");
 		return 5;
 	}
 
@@ -83,21 +87,18 @@ int main(int argc, char **argv)
 	char str[37];
 
 	if(uuid_ns != NULL) {
-		IUuid->UuidToText(uuid_ns, str);
-
-		printf("namespace: %s name: %s\n", str, name);
-		
+//		IUuid->UuidToText(uuid_ns, str);
 		IUuid->FreeUuid(uuid_ns);
 	}
 
 	if(uuid != NULL) {
 		IUuid->UuidToText(uuid, str);
 
-		printf("[ver %d] %s\n", ver, str);
+		printf("%s\n", str);
 		
 		IUuid->FreeUuid(uuid);
 	} else {
-		printf("[unable to allocate uuid]\n");
+		printf("genuuid (c) 2018 Chris Young <chris@unsatisfactorysoftware.co.uk>\n\nUnable to generate UUID.\n\nVER=VERSION/K/N must be 1, 4 or 5.\nFor version 5, UUID=NAMESPACE/K must be specified and be a valid UUID, and NAME/K must also be provided.\n\n");
 	}
 
 	if(name != NULL) free(name);
