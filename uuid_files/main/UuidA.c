@@ -99,8 +99,9 @@
 *       along with other tags, the behaviour is undefined.
 *
 *       This library can currently generate a maximum of
-*       ten UUIDs per microsecond.  If this limit is reached,
-*       NULL will be returned. Be prepared to handle this!
+*       ten v1 UUIDs per microsecond.  If this limit is
+*       reached, NULL will be returned. Be prepared to
+*       handle this!
 *
 *   BUGS
 *

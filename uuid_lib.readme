@@ -31,9 +31,9 @@ It generates v1 UUIDs by default.
 Examples:
 
 Generate a v4 UUID:
-1.> genuuid ver 4
+1.> uuid ver 4
 b1acd74e-7af4-4a6b-afcc-676466aa1231
 
 Generate a v5 UUID using the previous v4 UUID as a namespace:
-1.> genuuid ver 5 namespace b1acd74e-7af4-4a6b-afcc-676466aa1231 name uuid.library
+1.> uuid ver 5 b1acd74e-7af4-4a6b-afcc-676466aa1231 uuid.library
 d0fa129a-258c-505f-b561-3a36b3c21842
