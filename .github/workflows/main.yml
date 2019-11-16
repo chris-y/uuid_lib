@@ -8,6 +8,6 @@ jobs:
       - uses: actions/checkout@v1
       - name: ppc build
         id: build
-        uses: chris-y/amigaos-cross-docker-action@12bf175f83c39103328f3697420509591dcc2f1a
+        uses: chris-y/amigaos-cross-docker-action@HEAD
         with:
           makefile: 'uuid_files/Makefile'
