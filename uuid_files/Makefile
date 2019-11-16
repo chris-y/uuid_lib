@@ -5,7 +5,7 @@
 # 
 
 # Uncomment the next line if you are cross compiling
-# CROSS_COMPILE = ppc-amigaos-
+CROSS_COMPILE = ppc-amigaos-
 
 CC     = $(CROSS_COMPILE)gcc 
 CXX    = $(CROSS_COMPILE)c++ 
