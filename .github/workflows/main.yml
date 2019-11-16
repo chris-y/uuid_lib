@@ -5,9 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     name: build
     steps:
-    - name: ppc build
-      id: build
       uses: actions/checkout@v1
-      uses: chris-y/amigaos-cross-docker-action@12bf175f83c39103328f3697420509591dcc2f1a
-      with:
-        makefile: 'uuid_files/Makefile'
+      - name: ppc build
+        id: build
+        uses: chris-y/amigaos-cross-docker-action@12bf175f83c39103328f3697420509591dcc2f1a
+        with:
+          makefile: 'uuid_files/Makefile'
