@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     name: build
     steps:
-      uses: actions/checkout@v1
+      - uses: actions/checkout@v1
       - name: ppc build
         id: build
         uses: chris-y/amigaos-cross-docker-action@12bf175f83c39103328f3697420509591dcc2f1a
