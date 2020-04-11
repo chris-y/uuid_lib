@@ -1,13 +1,30 @@
-on: [push]
-
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+ 
 jobs:
-  hello_world_job:
+  build_ppc:
     runs-on: ubuntu-latest
-    name: build
+    container:
+      image: amigadev/crosstools:ppc-amigaos
+    name: os4
     steps:
-      - uses: actions/checkout@v1
-      - name: ppc build
-        id: build
-        uses: chris-y/amigaos-cross-docker-action@HEAD
-        with:
-          makefile: 'uuid_files/Makefile'
+      - uses: actions/checkout@v2
+      - name: buildos4
+        id: buildos4
+        run: |
+          cd ./uuid_files
+          make -f Makefile
+#  build_68k:
+#    runs-on: ubuntu-latest
+#    container:
+#      image: amigadev/crosstools:m68k-amigaos
+#    name: os3
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: buildos3
+#        id: buildos3
+#        run: make -f src/Makefile.os3
+
