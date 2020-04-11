@@ -14,13 +14,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: buildos4
         id: buildos4
-        run: |
-          cd ./uuid_files
-          make -f Makefile
+        run: make -f Makefile
       - uses: actions/upload-artifact@v1
         with:
           name: uuid_library
-          path: ./uuid.library
+          path: uuid_lib/uuid.library
 #  build_68k:
 #    runs-on: ubuntu-latest
 #    container:
